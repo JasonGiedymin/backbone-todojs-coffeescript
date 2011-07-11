@@ -7,7 +7,7 @@ This version contains this original and a [CoffeeScript](http://jashkenas.github
 ## See it in action ##
 See both versions in action [here](http://jasongiedymin.github.com/backbone-todojs-coffeescript/)
 
-The above also links to the annotated source for both verions as well.
+The above links to the annotated source for both verions as well.
 
 
 ## Contributions ##
