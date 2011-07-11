@@ -12,4 +12,5 @@ The above links to the annotated source for both verions as well.
 
 ## Contributions ##
 CoffeeScript version by [Jason Giedymin](http://jasongiedymin.com)
+
 Original version by [Jérôme Gravel-Niquet](http://jgn.me/)
