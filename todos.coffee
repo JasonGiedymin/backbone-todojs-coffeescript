@@ -94,7 +94,7 @@ $ ->
 
         # Re-render the contents of the todo item.
         render: =>
-            $(@el).html( @template(@model.toJSON()) )
+            this.$(@el).html( @template(@model.toJSON()) )
             @setContent()
             return this
 
@@ -102,8 +102,8 @@ $ ->
         # we use `jQuery.text` to set the contents of the todo item.
         setContent: ->
             content = @model.get("content")
-            $(".todo-content").text(content)
-            @input = $(".todo-input");
+            this.$(".todo-content").text(content)
+            @input = this.$(".todo-input");
             @input.bind("blur", @close);
             @input.val(content);
 
@@ -112,17 +112,17 @@ $ ->
             @model.toggle()
 
         # Switch this view into `"editing"` mode, displaying the input field.
-        edit: ->
-            $(@el).addClass("editing")
+        edit: =>
+            this.$(@el).addClass("editing")
             @input.focus()
 
         # Close the `"editing"` mode, saving changes to the todo.
-        close: ->
+        close: =>
             @model.save({ content: @input.val() })
             $(@el).removeClass("editing")
 
         # If you hit `enter`, we're through editing the item.
-        updateOnEnter: (e) ->
+        updateOnEnter: (e) =>
             @close() if e.keyCode is 13
 
         # Remove this view from the DOM.
@@ -155,7 +155,7 @@ $ ->
         # collection, when items are added or changed. Kick things off by
         # loading any preexisting todos that might be saved in *localStorage*.
         initialize: =>
-            @input = $("#new-todo")
+            @input = this.$("#new-todo")
 
             Todos.bind("add", @addOne)
             Todos.bind("reset", @addAll)
@@ -166,7 +166,7 @@ $ ->
         # Re-rendering the App just means refreshing the statistics -- the rest
         # of the app doesn't change.
         render: =>
-            @$('#todo-stats').html( @statsTemplate({
+            this.$('#todo-stats').html( @statsTemplate({
                 total:      Todos.length,
                 done:       Todos.done().length,
                 remaining:  Todos.remaining().length
@@ -174,9 +174,9 @@ $ ->
 
         # Add a single todo item to the list by creating a view for it, and
         # appending its element to the `<ul>`.
-        addOne: (todo) ->
+        addOne: (todo) =>
             view = new TodoView( {model: todo} )
-            $("#todo-list").append( view.render().el )
+            this.$("#todo-list").append( view.render().el )
 
         # Add all items in the **Todos** collection at once.
         addAll: =>
@@ -207,7 +207,7 @@ $ ->
         # Lazily show the tooltip that tells you to press `enter` to save
         # a new todo item, after one second.
         showTooltip: (e) ->
-            tooltip = @$(".ui-tooltip-top")
+            tooltip = this.$(".ui-tooltip-top")
             val = @input.val()
             tooltip.fadeOut()
             clearTimeout(@tooltipTimeout) if (@tooltipTimeout)
@@ -222,5 +222,4 @@ $ ->
     # Original documentation has been left intact.
     Todos = new TodoList
     App = new AppView()
-
 

@@ -69,6 +69,9 @@
     TodoView = (function() {
       __extends(TodoView, Backbone.View);
       function TodoView() {
+        this.updateOnEnter = __bind(this.updateOnEnter, this);
+        this.close = __bind(this.close, this);
+        this.edit = __bind(this.edit, this);
         this.render = __bind(this.render, this);
         TodoView.__super__.constructor.apply(this, arguments);
       }
@@ -85,7 +88,7 @@
         return this.model.view = this;
       };
       TodoView.prototype.render = function() {
-        $(this.el).html(this.template(this.model.toJSON()));
+        this.$(this.el).html(this.template(this.model.toJSON()));
         this.setContent();
         return this;
       };
@@ -101,7 +104,7 @@
         return this.model.toggle();
       };
       TodoView.prototype.edit = function() {
-        $(this.el).addClass("editing");
+        this.$(this.el).addClass("editing");
         return this.input.focus();
       };
       TodoView.prototype.close = function() {
@@ -129,6 +132,7 @@
       __extends(AppView, Backbone.View);
       function AppView() {
         this.addAll = __bind(this.addAll, this);
+        this.addOne = __bind(this.addOne, this);
         this.render = __bind(this.render, this);
         this.initialize = __bind(this.initialize, this);
         AppView.__super__.constructor.apply(this, arguments);
@@ -142,7 +146,7 @@
         "click .todo-clear a": "clearCompleted"
       };
       AppView.prototype.initialize = function() {
-        this.input = $("#new-todo");
+        this.input = this.$("#new-todo");
         Todos.bind("add", this.addOne);
         Todos.bind("reset", this.addAll);
         Todos.bind("all", this.render);
@@ -160,7 +164,7 @@
         view = new TodoView({
           model: todo
         });
-        return $("#todo-list").append(view.render().el);
+        return this.$("#todo-list").append(view.render().el);
       };
       AppView.prototype.addAll = function() {
         return Todos.each(this.addOne);
