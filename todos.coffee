@@ -55,7 +55,7 @@ $ ->
 
         # Filter down the list to only todo items that are still not finished.
         remaining: ->
-            return @without.apply( this, @done() )
+            return @without(@done())
 
         # We keep the Todos in sequential order, despite being saved by unordered
         # GUID in the database. This generates the next order number for new items.
