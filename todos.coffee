@@ -47,25 +47,25 @@ $ ->
 
         # Attribute getter/setter
         getDone = (todo) ->
-            return todo.get("done")
+            todo.get("done")
 
         # Filter down the list of all todo items that are finished.
         done: ->
-            return @filter( getDone )
+            @filter( getDone )
 
         # Filter down the list to only todo items that are still not finished.
         remaining: ->
-            return @without(@done())
+            @without(@done())
 
         # We keep the Todos in sequential order, despite being saved by unordered
         # GUID in the database. This generates the next order number for new items.
         nextOrder: ->
             return 1 if !@length
-            return @last().get('order') + 1
+            @last().get('order') + 1
 
         # Todos are sorted by their original insertion order.
         comparator: (todo) ->
-            return todo.get("order")
+            todo.get("order")
 
     ### Todo Item View ###
 
@@ -96,7 +96,7 @@ $ ->
         render: =>
             @$(@el).html( @template(@model.toJSON()) )
             @setContent()
-            return this
+            @
 
         # To avoid XSS (not that it would be harmful in this particular app),
         # we use `jQuery.text` to set the contents of the todo item.
@@ -184,7 +184,7 @@ $ ->
 
         # Generate the attributes for a new Todo item.
         newAttributes: ->
-            return {
+            {
                 content: @input.val(),
                 order:   Todos.nextOrder(),
                 done:    false
@@ -202,7 +202,7 @@ $ ->
             _.each(Todos.done(), (todo) ->
                 todo.clear()
             )
-            return false
+            false
 
         # Lazily show the tooltip that tells you to press `enter` to save
         # a new todo item, after one second.
