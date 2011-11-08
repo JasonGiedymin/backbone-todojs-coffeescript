@@ -52,7 +52,7 @@
         return this.filter(getDone);
       };
       TodoList.prototype.remaining = function() {
-        return this.without.apply(this, this.done());
+        return this.without(this.done());
       };
       TodoList.prototype.nextOrder = function() {
         if (!this.length) {
