@@ -47,25 +47,25 @@ $ ->
 
         # Attribute getter/setter
         getDone = (todo) ->
-            return todo.get("done")
+            todo.get("done")
 
         # Filter down the list of all todo items that are finished.
         done: ->
-            return @filter( getDone )
+            @filter( getDone )
 
         # Filter down the list to only todo items that are still not finished.
         remaining: ->
-            return @without.apply( this, @done() )
+            @without(@done())
 
         # We keep the Todos in sequential order, despite being saved by unordered
         # GUID in the database. This generates the next order number for new items.
         nextOrder: ->
             return 1 if !@length
-            return @last().get('order') + 1
+            @last().get('order') + 1
 
         # Todos are sorted by their original insertion order.
         comparator: (todo) ->
-            return todo.get("order")
+            todo.get("order")
 
     ### Todo Item View ###
 
@@ -89,21 +89,21 @@ $ ->
         # a one-to-one correspondence between a **Todo** and a **TodoView** in this
         # app, we set a direct reference on the model for convenience.
         initialize: ->
-            @model.bind('change', this.render);
+            @model.bind('change', @render);
             @model.view = this;
 
         # Re-render the contents of the todo item.
         render: =>
-            this.$(@el).html( @template(@model.toJSON()) )
+            @$(@el).html( @template(@model.toJSON()) )
             @setContent()
-            return this
+            @
 
         # To avoid XSS (not that it would be harmful in this particular app),
         # we use `jQuery.text` to set the contents of the todo item.
         setContent: ->
             content = @model.get("content")
-            this.$(".todo-content").text(content)
-            @input = this.$(".todo-input");
+            @$(".todo-content").text(content)
+            @input = @$(".todo-input");
             @input.bind("blur", @close);
             @input.val(content);
 
@@ -113,7 +113,7 @@ $ ->
 
         # Switch this view into `"editing"` mode, displaying the input field.
         edit: =>
-            this.$(@el).addClass("editing")
+            @$(@el).addClass("editing")
             @input.focus()
 
         # Close the `"editing"` mode, saving changes to the todo.
@@ -155,7 +155,7 @@ $ ->
         # collection, when items are added or changed. Kick things off by
         # loading any preexisting todos that might be saved in *localStorage*.
         initialize: =>
-            @input = this.$("#new-todo")
+            @input = @$("#new-todo")
 
             Todos.bind("add", @addOne)
             Todos.bind("reset", @addAll)
@@ -166,7 +166,7 @@ $ ->
         # Re-rendering the App just means refreshing the statistics -- the rest
         # of the app doesn't change.
         render: =>
-            this.$('#todo-stats').html( @statsTemplate({
+            @$('#todo-stats').html( @statsTemplate({
                 total:      Todos.length,
                 done:       Todos.done().length,
                 remaining:  Todos.remaining().length
@@ -176,7 +176,7 @@ $ ->
         # appending its element to the `<ul>`.
         addOne: (todo) =>
             view = new TodoView( {model: todo} )
-            this.$("#todo-list").append( view.render().el )
+            @$("#todo-list").append( view.render().el )
 
         # Add all items in the **Todos** collection at once.
         addAll: =>
@@ -184,7 +184,7 @@ $ ->
 
         # Generate the attributes for a new Todo item.
         newAttributes: ->
-            return {
+            {
                 content: @input.val(),
                 order:   Todos.nextOrder(),
                 done:    false
@@ -202,12 +202,12 @@ $ ->
             _.each(Todos.done(), (todo) ->
                 todo.clear()
             )
-            return false
+            false
 
         # Lazily show the tooltip that tells you to press `enter` to save
         # a new todo item, after one second.
         showTooltip: (e) ->
-            tooltip = this.$(".ui-tooltip-top")
+            tooltip = @$(".ui-tooltip-top")
             val = @input.val()
             tooltip.fadeOut()
             clearTimeout(@tooltipTimeout) if (@tooltipTimeout)
